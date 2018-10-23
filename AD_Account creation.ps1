@@ -2,28 +2,22 @@
 
 Import-Module ActiveDirectory
 
-#Get User name and pwd
-function Get-Creds
+$exit = ""
+
+while($exit -ne "n")
 {
+
+#Get User name and pwd
+
 $firstname = Read-Host -Prompt "Enter your first name"
 $secondname = Read-Host -Prompt "Enter your second name"
-$password = Read-Host -Prompt "Enter your password"
-}
+$password = "Welcome@123"
+
 
 #Output creds for confirmation
 
-echo "Hi $firstname $secondname, your password is $password "
-$Readhost = Read-Host -Prompt "Is this correct (y/n)?"  
+echo "Hi $firstname $secondname, your default password is $password"
 
-Switch ($ReadHost) 
-     { 
-       y {Write-host "Thanks for confirming. Creating your AD account......."; $PublishSettings=$true} 
-       n {
-          Write-Host "Please re-enter your credentials"
-          Get-Job -Name Get-Creds | Receive-Job 
-          } 
-       Default {Write-Host "Invalid input"} 
-     } 
 
 #Specify the path
 
@@ -38,3 +32,10 @@ $securePwd = ConvertTo-SecureString $password -AsPlainText -Force
 New-ADuser -Name "$firstname $lastname" -GivenName $firstname -Surname $lastname -UserPrincipalName "$firstname.$lastname" -Path $OUpath -AccountPassword $securePwd -ChangePasswordAtLogon $true
 
 Write-Host "AD account successfully created..... Make sure to change the password upon first login"
+
+#Exit condition
+
+$exit = Read-Host -Prompt "Do you want to create another account ? (y/n)"
+}
+
+Write-Output "Thank you....Bye"
