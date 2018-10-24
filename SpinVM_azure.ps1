@@ -1,20 +1,33 @@
+#Login to the Azure portal
+
+
+
 # Variables for common values
-$resourceGroup = "myResourceGroup"
-$location = "westeurope"
-$vmName = "myVM"
+
+
+
+# Create a resource group
+$resourceGroup = Read-Host -Prompt "Specify the resource group name"
+New-AzureRmResourceGroup -Name $resourceGroup -Location $location
+
+
+$location = "West US"
+$vmName = Read-Host -Prompt "Specify the VM name"
 
 # Create user object
 $cred = Get-Credential -Message "Enter a username and password for the virtual machine."
 
-# Create a resource group
-New-AzureRmResourceGroup -Name $resourceGroup -Location $location
+
+# Create a virtual network
+$vnet = New-AzureRmVirtualNetwork -ResourceGroupName $resourceGroup -Location $location -Name MYvNET -AddressPrefix 192.168.0.0/16 -Subnet $subnetConfig
+
+$resourceGroup = Read-Host -Prompt "Specify the resource group name"
+echo "Creating a virtual network"
 
 # Create a subnet configuration
 $subnetConfig = New-AzureRmVirtualNetworkSubnetConfig -Name mySubnet -AddressPrefix 192.168.1.0/24
 
-# Create a virtual network
-$vnet = New-AzureRmVirtualNetwork -ResourceGroupName $resourceGroup -Location $location `
-  -Name MYvNET -AddressPrefix 192.168.0.0/16 -Subnet $subnetConfig
+
 
 # Create a public IP address and specify a DNS name
 $pip = New-AzureRmPublicIpAddress -ResourceGroupName $resourceGroup -Location $location `
