@@ -1,12 +1,15 @@
 #Login to the Azure portal
 
+echo "Connecting to Azure...."
+Connect-AzureRmAccount
 
+#show current VMs
 
-# Variables for common values
-
+Get-AzureRmVM -Status
 
 
 # Create a resource group
+
 $resourceGroup = Read-Host -Prompt "Specify the resource group name"
 New-AzureRmResourceGroup -Name $resourceGroup -Location $location
 
@@ -15,7 +18,13 @@ $location = "West US"
 $vmName = Read-Host -Prompt "Specify the VM name"
 
 # Create user object
-$cred = Get-Credential -Message "Enter a username and password for the virtual machine."
+$cred = Get-Credential -Message "Enter a username and password for the virtual machine. The supplied password must be between 8-123 characters long and must satisfy at least 3 of password complexity 
+requirements from the following: 
+1) Contains an uppercase character
+2) Contains a lowercase character
+3) Contains a numeric digit
+4) Contains a special character
+5) Control characters are not allowed"
 
 
 # Create a virtual network
@@ -64,7 +73,15 @@ Add-AzureRmVMNetworkInterface -Id $nic.Id
 
 # Create a virtual machine
 
-echo "Creating the Virtual machine.........."
-New-AzureRmVM -ResourceGroupName $resourceGroup -Location $location -VM $vmConfig
-echo "Successfully created Virtual Machine with inbound access via RDP...."
-Get-AzureRmVM -Name $vmName
+echo "Initiating creation.........."
+New-AzureRmVM -ResourceGroupName $resourceGroup -Location $location -VM $vmConfig -AsJob
+Write-Host "";
+echo "Successfully creating Virtual Machine with inbound access via RDP....This may take upto 5 minutes....Please wait!"
+Start-Sleep -s 15
+
+Write-Host "";
+Write-Host "";
+
+Write-Host "Current status :";
+Write-Host "";
+Get-AzureRmVM -Status
