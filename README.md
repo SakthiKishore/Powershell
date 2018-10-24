@@ -1,2 +1,2 @@
 # Powershell
-Various scripts created using powershell (AD....)
+Various scripts created using powershell
