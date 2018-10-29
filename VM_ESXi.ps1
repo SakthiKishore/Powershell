@@ -1,7 +1,8 @@
+
 #Login to the ESXi host
 
 echo "Connecting to ESXi server ...."
-
+Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false
 do
     {
     Connect-VIServer -Server 10.192.34.201 -ErrorVariable wrong_cred -ErrorAction SilentlyContinue
@@ -30,3 +31,6 @@ switch ($action)
 
 
 $vmName = Read-Host -Prompt "Specify the VM name"
+
+
+
