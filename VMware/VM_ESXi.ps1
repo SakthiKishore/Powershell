@@ -29,8 +29,3 @@ switch ($action)
      
 }
 
-
-$vmName = Read-Host -Prompt "Specify the VM name"
-
-
-
